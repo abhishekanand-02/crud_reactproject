@@ -1,31 +1,21 @@
+// server/server.js
 const express = require('express');
-const mysql = require('mysql');
 const cors = require('cors');
-const bodyParser = require('body-parser');
+const mysql = require('mysql2');
 
 const app = express();
-const port = 5000;
+app.use(cors()); // Enable CORS for all routes
+app.use(express.json()); // Parse JSON request bodies
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-
-// MySQL connection
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'passwd@05#', // Replace with your MySQL root password
-    database: 'book_management'
-});
-
-// Connect to MySQL
-db.connect(err => {
-    if (err) {
-        console.error('Database connection failed: ' + err.stack);
-        return;
-    }
-    console.log('Connected to database.');
-});
+// MySQL connection function
+const createConnection = () => {
+    return mysql.createConnection({
+        host: 'localhost',         // Your MySQL host
+        user: 'root',              // Your MySQL username
+        password: 'passwd@05#', // Your MySQL password
+        database: 'book_management', // Your MySQL database name
+    });
+};
 
 // Root route
 app.get('/', (req, res) => {
@@ -34,10 +24,11 @@ app.get('/', (req, res) => {
 
 // Get all books
 app.get('/api/books', (req, res) => {
-    db.query('SELECT * FROM books', (err, results) => {
+    const connection = createConnection();
+    connection.query('SELECT * FROM books', (err, results) => {
         if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Database query failed' });
+            console.error('Error fetching books:', err);
+            return res.status(500).json({ error: 'Failed to fetch books' });
         }
         res.json(results);
     });
@@ -46,36 +37,46 @@ app.get('/api/books', (req, res) => {
 // Add a new book
 app.post('/api/books', (req, res) => {
     const { name, author, description, price } = req.body;
-    db.query('INSERT INTO books (name, author, description, price) VALUES (?, ?, ?, ?)', 
-    [name, author, description, price], (err, results) => {
-        if (err) {
-            console.error('Error inserting book:', err);
-            return res.status(500).json({ error: 'Failed to add book' });
+    const connection = createConnection();
+    connection.query(
+        'INSERT INTO books (name, author, description, price) VALUES (?, ?, ?, ?)',
+        [name, author, description, price],
+        (err, result) => {
+            if (err) {
+                console.error('Error adding book:', err);
+                return res.status(500).json({ error: 'Failed to add book' });
+            }
+            const newBookId = result.insertId;
+            res.status(201).json({ id: newBookId, name, author, description, price });
         }
-        res.status(201).json({ id: results.insertId, name, author, description, price });
-    });
+    );
 });
 
 // Update a book
 app.put('/api/books/:id', (req, res) => {
     const { id } = req.params;
     const { name, author, description, price } = req.body;
-    db.query('UPDATE books SET name = ?, author = ?, description = ?, price = ? WHERE id = ?', 
-    [name, author, description, price, id], (err, results) => {
-        if (err) {
-            console.error('Error updating book:', err);
-            return res.status(500).json({ error: 'Failed to update book' });
+    const connection = createConnection();
+    connection.query(
+        'UPDATE books SET name = ?, author = ?, description = ?, price = ? WHERE id = ?',
+        [name, author, description, price, id],
+        (err) => {
+            if (err) {
+                console.error('Error updating book:', err);
+                return res.status(500).json({ error: 'Failed to update book' });
+            }
+            res.json({ id, name, author, description, price });
         }
-        res.json({ id, name, author, description, price });
-    });
+    );
 });
 
 // Delete a book
 app.delete('/api/books/:id', (req, res) => {
     const { id } = req.params;
-    db.query('DELETE FROM books WHERE id = ?', [id], (err, results) => {
+    const connection = createConnection();
+    connection.query('DELETE FROM books WHERE id = ?', [id], (err) => {
         if (err) {
-            console.error(err);
+            console.error('Error deleting book:', err);
             return res.status(500).json({ error: 'Failed to delete book' });
         }
         res.json({ deleted: true });
@@ -83,6 +84,7 @@ app.delete('/api/books/:id', (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+const PORT = 5000; // Hardcoded port number
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
