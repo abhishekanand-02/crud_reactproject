@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'July@2024@05#', // Replace with your MySQL root password
+    password: 'passwd@05#', // Replace with your MySQL root password
     database: 'book_management'
 });
 
