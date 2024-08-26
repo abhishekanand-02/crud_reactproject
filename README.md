@@ -40,7 +40,7 @@ To get started with the Book Management System, follow these steps:
    - Start the backend server:
      ```bash
      cd server
-     node index.js
+     node server.js
    - Start the frontend application:
     ```bash
     cd ../client
