@@ -1,0 +1,76 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height:auto;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px; /* Adjust as needed */
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: auto; /* Allow scrolling if content overflows */
+}
+
+h1 {
+  text-align: center;
+  background-color: cadetblue;
+  padding: 15px;
+  color: white;
+  margin: 0 0 20px; /*Add margin-bottom to separate from other elements */
+}
+
+input, textarea {
+  width: calc(100% - 22px); /*Adjust width to account for padding and border */
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px; /*Increase padding for better click area */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: auto; /* Adjust width to auto to fit content */
+  display: block; /* Make sure button doesn't stretch */
+  text-align: center;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  background: white;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+}
+
+li:last-child {
+  margin-bottom: 0; /* Remove bottom margin from the last item */
+}
