@@ -1,3 +1,4 @@
+
 .App {
   text-align: center;
 }
@@ -36,8 +37,6 @@
     transform: rotate(360deg);
   }
 }
-
-
 .container {
   max-width: 600px;
   margin: auto;
@@ -49,6 +48,10 @@
 
 h1 {
   text-align: center;
+  background-color: #747e74; /* Green background for the heading */
+  color: white;              /* White text color */
+  padding: 10px;            /* Padding for the heading */
+  border-radius: 4px;       /* Rounded corners */
 }
 
 input, textarea {
@@ -65,6 +68,8 @@ button {
   border-radius: 4px;
   cursor: pointer;
   margin-top: 10px;
+  background-color: #4CAF50; 
+  color: white; 
 }
 
 .book-item {
@@ -84,12 +89,12 @@ button {
   gap: 10px; /* Space between buttons */
 }
 
-.update-btn {
-  background-color: #4CAF50;
-  color: white;
+.update-btn, .add-btn {
+  background-color: #4CAF50; /* Green background for both buttons */
+  color: white;              /* White text color */
 }
 
 .delete-btn {
-  background-color: #f44336;
-  color: white;
+  background-color: #f44336; /* Red background for delete button */
+  color: white;              /* White text color */
 }
