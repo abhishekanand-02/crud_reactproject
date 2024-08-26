@@ -10,13 +10,14 @@ function App() {
     const [editMode, setEditMode] = useState(false);
     const [currentBookId, setCurrentBookId] = useState(null);
 
+    // Fetch books from the backend when the component mounts
     useEffect(() => {
         fetchBooks();
     }, []);
 
     const fetchBooks = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/books');
+            const response = await fetch('http://localhost:5000/api/books'); // Use the correct API endpoint
             if (!response.ok) {
                 throw new Error('Failed to fetch books');
             }
@@ -55,7 +56,6 @@ function App() {
     };
 
     const updateBook = async () => {
-        console.log("Update function called"); // Debugging log
         if (!name || !author || !description || !price) {
             alert('Please fill in all fields.');
             return;
@@ -70,14 +70,11 @@ function App() {
                 body: JSON.stringify({ name, author, description, price }),
             });
 
-            console.log("Response status:", response.status); // Debugging log
-
             if (!response.ok) {
                 throw new Error('Failed to update book');
             }
 
             const updatedBook = await response.json();
-            console.log("Updated book:", updatedBook); // Debugging log
             setBooks(books.map(book => (book.id === currentBookId ? updatedBook : book)));
             resetForm();
         } catch (error) {
